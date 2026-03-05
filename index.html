@@ -31,6 +31,7 @@
       --nothing-border-strong: rgba(0, 0, 0, 0.35);
       --text-color: #111111;
       --table-hover: rgba(0, 0, 0, 0.03);
+      --mobile-toc-bg: rgba(0,0,0,0.05);
     }
 
     [data-theme='dark'] {
@@ -44,40 +45,30 @@
       --nothing-border-strong: rgba(255, 255, 255, 0.35);
       --text-color: #f5f5f5;
       --table-hover: rgba(255, 255, 255, 0.04);
+      --mobile-toc-bg: rgba(255,255,255,0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    /* SCROLL FIX: Removed overflow to keep position: sticky working perfectly */
     html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-    body { font-family: var(--ifm-font-family-base); background-color: var(--ifm-background-color); color: var(--text-color); line-height: 1.6; transition: background-color 0.3s ease, color 0.3s ease; width: 100%; max-width: 100vw; margin: 0; }
-    
+    body { font-family: var(--ifm-font-family-base); background-color: var(--ifm-background-color); color: var(--text-color); line-height: 1.6; overflow-x: clip; width: 100vw; margin: 0; }
     a { text-decoration: none; color: inherit; cursor: pointer; transition: all 0.2s ease; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
     .hidden { display: none !important; }
 
     /* ==========================================
-       🔥 SUPER SMOOTH ANIMATIONS
+       ANIMATIONS
        ========================================== */
-    @keyframes fadeInUp { 
-      0% { opacity: 0; transform: translateY(30px); } 
-      100% { opacity: 1; transform: translateY(0); } 
-    }
-    @keyframes fadeIn { 
-      0% { opacity: 0; } 
-      100% { opacity: 1; } 
-    }
+    @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+    .animate-fade-in { animation: fadeIn 0.4s ease forwards; }
+    .animate-slide-up { animation: fadeInUp 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; opacity: 0; }
     
-    .animate-fade-in { animation: fadeIn 0.5s ease forwards; }
-    .animate-slide-up { animation: fadeInUp 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; opacity: 0; }
-    
-    /* Staggered Delay for Elements */
-    .stagger-1 { animation-delay: 0.1s; }
-    .stagger-2 { animation-delay: 0.2s; }
-    .stagger-3 { animation-delay: 0.3s; }
-    .stagger-4 { animation-delay: 0.4s; }
-    .stagger-5 { animation-delay: 0.5s; }
-    .stagger-6 { animation-delay: 0.6s; }
+    .featureRow > a:nth-child(1) .featureCard { animation-delay: 0.1s; }
+    .featureRow > a:nth-child(2) .featureCard { animation-delay: 0.15s; }
+    .featureRow > a:nth-child(3) .featureCard { animation-delay: 0.2s; }
+    .featureRow > a:nth-child(4) .featureCard { animation-delay: 0.25s; }
+    .featureRow > a:nth-child(5) .featureCard { animation-delay: 0.3s; }
+    .featureRow > a:nth-child(6) .featureCard { animation-delay: 0.35s; }
 
     /* ==========================================
        NAVBAR
@@ -99,30 +90,22 @@
     .heroBanner { padding: 6rem 1.5rem 5rem; text-align: left; position: relative; min-height: 45vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .glyphGrid { position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.08) 1px, transparent 0); background-size: 24px 24px; }
     [data-theme='dark'] .glyphGrid { background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.1) 1px, transparent 0); }
-    
     .heroContent { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 3rem; width: 100%; max-width: 1050px; margin: 0 auto; flex-wrap: wrap; }
     .heroText { flex: 1; min-width: 300px; }
     .heroTitle { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1rem; }
     .heroSubtitle { font-size: clamp(1rem, 2vw, 1.25rem); opacity: 0.7; margin: 0 0 2rem 0; font-weight: 400; line-height: 1.5; }
-    
     .heroImageContainer { flex-shrink: 0; display: flex; justify-content: center; }
     .heroImageContainer img { width: 100%; max-width: 250px; object-fit: contain; filter: drop-shadow(0 10px 30px rgba(215, 25, 33, 0.15)); transition: transform 0.3s; }
     [data-theme='dark'] .heroImageContainer img { filter: drop-shadow(0 10px 30px rgba(255, 59, 59, 0.25)); }
     .heroImageContainer img:hover { transform: scale(1.05) translateY(-5px); }
-
     .ctaButton { display: inline-flex; padding: 0.8rem 2rem; font-size: 0.95rem; font-weight: 600; background: var(--ifm-color-primary); color: #fff !important; border: none; border-radius: 4px; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(215, 25, 33, 0.2); }
     .ctaButton:hover { background: var(--ifm-color-primary-dark); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(215, 25, 33, 0.3); }
 
-    /* ==========================================
-       FEATURES / CARDS (Desktop: 3, Mobile: 1)
-       ========================================== */
+    /* Features / Cards */
     .features { padding: 4rem 0 2rem; }
     .sectionLabel { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; opacity: 0.5; margin-bottom: 2rem; display: block; }
-    
-    /* EXACTLY 3 COLUMNS ON DESKTOP */
     .featureRow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-    
-    .featureCard { position: relative; padding: 1.8rem; border: 1px solid var(--nothing-border); background-color: var(--card-bg); border-radius: 8px; height: 100%; min-height: 160px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); overflow: hidden; }
+    .featureCard { position: relative; padding: 1.8rem; border: 1px solid var(--nothing-border); background-color: var(--card-bg); border-radius: 8px; height: 100%; min-height: 160px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); overflow: hidden; opacity: 0; }
     .featureCard::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--ifm-color-primary); transition: height 0.3s; }
     .featureCard:hover { border-color: var(--nothing-border-strong); transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
     [data-theme='dark'] .featureCard:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
@@ -138,7 +121,7 @@
     .socialLink:hover { border-color: var(--ifm-color-primary); color: var(--ifm-color-primary); transform: translateY(-2px); }
 
     /* ==========================================
-       DOCS LAYOUT (Sticky Sidebars Fixed)
+       DOCS LAYOUT (Sticky Sidebars)
        ========================================== */
     .docs-layout { display: flex; align-items: flex-start; gap: 2rem; padding: 2rem 1.5rem; max-width: 1400px; margin: 0 auto; min-height: 80vh; }
     
@@ -163,7 +146,22 @@
     .toc-link.h3 { padding-left: 0.8rem; font-size: 0.75rem; opacity: 0.5; }
 
     /* ==========================================
-       MARKDOWN TYPOGRAPHY (Clear Borders & Tables)
+       🔥 MOBILE BREADCRUMB & TOC (New Docusaurus Style)
+       ========================================== */
+    .mobile-top-bar { display: none; align-items: center; gap: 0.5rem; font-size: 0.9rem; margin-bottom: 1.5rem; color: var(--text-color); opacity: 0.8; font-weight: 500; }
+    .mobile-top-bar span { cursor: pointer; transition: color 0.2s; }
+    .mobile-top-bar span:hover { color: var(--ifm-color-primary); opacity: 1; }
+    .mobile-top-bar .active-crumb { background: rgba(215,25,33,0.1); color: var(--ifm-color-primary); padding: 0.2rem 0.8rem; border-radius: 20px; font-weight: 600; opacity: 1; }
+
+    .mobile-toc { display: none; background-color: var(--mobile-toc-bg); border-radius: 8px; margin-bottom: 2rem; border: 1px solid var(--nothing-border); }
+    .mobile-toc summary { padding: 1rem; font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; }
+    .mobile-toc summary::-webkit-details-marker { display: none; }
+    .mobile-toc summary::after { content: '▼'; font-size: 0.8em; opacity: 0.5; }
+    .mobile-toc[open] summary::after { content: '▲'; }
+    .mobile-toc .toc-menu { padding: 0 1rem 1rem 1rem; }
+
+    /* ==========================================
+       🔥 COMPACT TABLES & TYPOGRAPHY FIX
        ========================================== */
     .markdown-body h1 { font-size: 2.5rem; margin-bottom: 1rem; }
     .markdown-body h2 { font-size: 1.6rem; margin-top: 2.5rem; margin-bottom: 1.2rem; border-bottom: 1px solid var(--nothing-border); padding-bottom: 0.5rem; }
@@ -171,10 +169,12 @@
     .markdown-body p, .markdown-body ul { margin-bottom: 1.2rem; opacity: 0.85; font-size: 0.95rem; }
     .markdown-body ul { margin-left: 1.5rem; }
     .markdown-body a { color: var(--ifm-color-primary); }
-    .markdown-body hr { border: none; height: 1px; background-color: var(--nothing-border-strong); margin: 2.5rem 0; opacity: 0.5; }
+    .markdown-body hr { border: none; height: 1.5px; background-color: var(--nothing-border-strong); margin: 2.5rem 0; opacity: 0.7; }
     .markdown-body pre { background: var(--card-bg); border: 1px solid var(--nothing-border-strong); padding: 1.2rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1.5rem; }
     
-    .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; background-color: var(--card-bg); border-radius: 8px; overflow: hidden; font-size: 0.9rem; border: 1px solid var(--nothing-border-strong); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    /* TABLE FIX: Compact size, no giant empty spaces */
+    .table-wrapper { overflow-x: auto; margin-bottom: 2rem; }
+    .markdown-body table { width: max-content; min-width: 50%; max-width: 100%; border-collapse: collapse; background-color: var(--card-bg); border-radius: 8px; overflow: hidden; font-size: 0.9rem; border: 1px solid var(--nothing-border-strong); box-shadow: 0 4px 12px rgba(0,0,0,0.03); margin-bottom: 0; }
     .markdown-body th, .markdown-body td { padding: 0.9rem 1.2rem; text-align: left; border: 1px solid var(--nothing-border-strong); }
     .markdown-body th { background: rgba(128, 128, 128, 0.1); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; opacity: 0.9; }
 
@@ -184,42 +184,36 @@
     @media screen and (max-width: 1024px) { .doc-sidebar-right { display: none; } }
     @media screen and (max-width: 768px) {
       .heroContent { flex-direction: column-reverse; text-align: center; gap: 2rem; }
-      .heroText { min-width: 100%; }
       .heroImageContainer img { max-width: 180px; }
-      
       .container { padding: 0 1.5rem; } 
       
-      /* EXACTLY 1 COLUMN ON MOBILE */
-      .featureRow { grid-template-columns: 1fr; gap: 1.5rem; }
+      .featureRow { grid-template-columns: 1fr; gap: 1.5rem; } /* 1 CARD MOBILE */
       
-      .docs-layout { flex-direction: column; padding: 1rem 1.5rem; gap: 1.5rem; }
-      .doc-sidebar-left { width: 100%; position: static; flex-direction: row; overflow-x: auto; padding-bottom: 10px; border-right: none; border-bottom: 1px solid var(--nothing-border); max-height: none; }
-      .sidebar-label { display: none; }
-      .sidebar-link { white-space: nowrap; margin-right: 0.5rem; padding: 0.5rem 0.8rem; border-radius: 20px; border: 1px solid var(--nothing-border); }
-      .sidebar-link.active { border-color: var(--ifm-color-primary); }
-      .back-link { white-space: nowrap; margin-right: 1rem; margin-bottom: 0; }
+      .docs-layout { flex-direction: column; padding: 1rem 1.5rem; gap: 1rem; }
+      
+      /* Hide old left sidebar completely on mobile */
+      .doc-sidebar-left { display: none; }
+      
+      /* Show new Mobile Nav & TOC */
+      .mobile-top-bar { display: flex; }
+      .mobile-toc { display: block; }
+      
       .doc-main { padding: 0; width: 100%; overflow-x: hidden; }
-      .markdown-body table { display: block; overflow-x: auto; white-space: nowrap; width: 100%; }
       .navbar__links { gap: 0.5rem; }
       
       #floating-save-bar { width: 95% !important; flex-direction: column; text-align: center; }
       .admin-box { width: 95%; }
     }
 
-    /* ==========================================
-       ADMIN MODALS & BARS
-       ========================================== */
+    /* Modals */
     .admin-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 9999; display: flex; align-items: center; justify-content: center; }
     .admin-box { background: var(--ifm-background-color); border: 1px solid var(--ifm-color-primary); border-radius: 8px; width: 90%; max-width: 850px; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
     .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--nothing-border); padding-bottom: 1rem; }
     .admin-header h3 { font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem;}
-    
     .admin-editor { width: 100%; height: 350px; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--nothing-border-strong); border-radius: 4px; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; resize: vertical; outline: none; line-height: 1.5;}
     .admin-editor:focus { border-color: var(--ifm-color-primary); }
-    
     .admin-controls { display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem;}
     .admin-pass { flex: 1; padding: 0.8rem; background: var(--card-bg); color: var(--text-color); border: 1px solid var(--nothing-border-strong); border-radius: 4px; outline: none;}
-    .admin-pass:focus { border-color: var(--ifm-color-primary); }
     .btn-save { background: #d71921; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 4px; font-weight: 600; cursor: pointer; transition: 0.2s;}
     .btn-save:hover { background: #b6151b; }
     .btn-cancel { background: transparent; color: var(--text-color); border: 1px solid var(--nothing-border-strong); padding: 0.8rem 1.5rem; border-radius: 4px; cursor: pointer; }
@@ -301,6 +295,17 @@
       </aside>
 
       <main class="doc-main">
+        <div class="mobile-top-bar">
+          <span onclick="goHome()">🏠 Home</span> > 
+          <span>Resources</span> > 
+          <span class="active-crumb" id="breadcrumb-current">...</span>
+        </div>
+
+        <details class="mobile-toc">
+          <summary>On this page</summary>
+          <div class="toc-menu" id="mobile-toc-container"></div>
+        </details>
+
         <div id="loading-text" class="hidden">Fetching from GitHub...</div>
         <div id="markdown-container" class="markdown-body"></div>
       </main>
@@ -316,7 +321,6 @@
     <div class="admin-box" style="max-width: 400px; text-align: center;">
       <h3 style="margin-bottom: 10px;">🛠️ Select Edit Mode</h3>
       <p style="opacity: 0.7; font-size: 0.9rem; margin-bottom: 20px;">Which editor would you like to use?</p>
-      
       <button onclick="startVisualEditor()" class="ctaButton" style="width:100%; margin-bottom:15px; justify-content: center;">👁️ Live Visual Editor (Word-Style)</button>
       <button onclick="startRawEditor()" class="ctaButton" style="width:100%; margin-bottom:15px; background: #1a1a1a; justify-content: center;">💻 Raw Code Editor (Markdown)</button>
       <button onclick="closeEditorChoice()" class="btn-cancel" style="width:100%;">Cancel</button>
@@ -351,19 +355,16 @@
   </footer>
 
   <script>
-    // 🛑 ADMIN SETTINGS: Paste tokens here
-    const API_PART_1 = "ghp_rdIV6UHZMypvbpYdI";       // <-- REPLACE THIS 
-    const API_PART_2 = "fSbYC9O4nbQEf2yZy5G";   // <-- REPLACE THIS 
+    // 🛑 ADMIN SETTINGS: Yahan apna data manually daalna ZAROORI hai!
+    const API_PART_1 = "ghp_xxxxxxxxxxxx";       // <-- REPLACE THIS 
+    const API_PART_2 = "yyyyyyyyyyyyyyyyyyyy";   // <-- REPLACE THIS 
     const ADMIN_PASSWORD = "rohit";              // <-- SET PASSWORD HERE
 
     let currentFileName = "";
     let currentFileSha = "";
-    
-    // Editor State Shields
     let isVisualEditMode = false;
     let isRawEditMode = false;
 
-    // Theme Setup
     document.addEventListener("DOMContentLoaded", () => {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
       document.getElementById('themeBtn').innerText = isDark ? 'Light Mode' : 'Dark Mode';
@@ -378,28 +379,33 @@
     }
 
     // ========================================================
-    // 🚀 NAVIGATION LOGIC (WITH EDIT MODE SHIELD)
+    // 🚀 NAVIGATION & FIX FOR BIG TABLES
     // ========================================================
     async function openPage(fileName) {
-      // SHIELD: If user is editing, DO NOT open the page!
-      if (isVisualEditMode || isRawEditMode) {
-        return; 
-      }
+      if (isVisualEditMode || isRawEditMode) return; 
 
       document.getElementById('home-view').classList.add('hidden');
       const contentView = document.getElementById('content-view');
       contentView.classList.remove('hidden');
       
+      contentView.classList.remove('animate-fade-in');
+      void contentView.offsetWidth; 
+      contentView.classList.add('animate-fade-in');
+      
       const container = document.getElementById('markdown-container');
       const loader = document.getElementById('loading-text');
       const tocContainer = document.getElementById('toc-container');
+      const mobileTocContainer = document.getElementById('mobile-toc-container');
       
       document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
       const activeLink = document.getElementById('nav-' + fileName);
       if (activeLink) activeLink.classList.add('active');
 
+      document.getElementById('breadcrumb-current').innerText = fileName.charAt(0).toUpperCase() + fileName.slice(1);
+
       container.innerHTML = '';
       tocContainer.innerHTML = ''; 
+      mobileTocContainer.innerHTML = '';
       loader.classList.remove('hidden');
       window.scrollTo(0, 0);
 
@@ -419,23 +425,36 @@
         loader.classList.add('hidden');
         container.innerHTML = marked.parse(markdownText);
         
-        // Trigger smooth fade up animation
+        // Wrap tables in a div to prevent horizontal stretch overflow issues
+        container.querySelectorAll('table').forEach(table => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-wrapper';
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+
         container.classList.remove('animate-slide-up');
         void container.offsetWidth; 
         container.classList.add('animate-slide-up');
 
-        // TOC
         const headings = container.querySelectorAll('h2, h3');
         if (headings.length !== 0) {
           headings.forEach((heading, index) => {
             const text = heading.innerText;
             const safeId = text.toLowerCase().replace(/[^\w]+/g, '-') + '-' + index;
             heading.id = safeId; 
+            
             const link = document.createElement('a');
             link.href = '#' + safeId;
             link.innerText = text;
             link.className = 'toc-link ' + heading.tagName.toLowerCase(); 
-            tocContainer.appendChild(link);
+            
+            tocContainer.appendChild(link.cloneNode(true));
+            
+            // Add click listener to close mobile details when clicked
+            const mLink = link.cloneNode(true);
+            mLink.onclick = () => document.querySelector('.mobile-toc').removeAttribute('open');
+            mobileTocContainer.appendChild(mLink);
           });
         }
       } catch (error) {
@@ -445,7 +464,6 @@
     }
 
     function goHome() {
-      // SHIELD
       if (isVisualEditMode || isRawEditMode) return;
 
       currentFileName = "";
@@ -455,9 +473,8 @@
       window.scrollTo(0, 0);
     }
 
-
     // ========================================================
-    // 🚀 CHOOSE EDITOR MENU LOGIC
+    // 🚀 EDITORS LOGIC
     // ========================================================
     function triggerEditorChoice() {
       if(isVisualEditMode || isRawEditMode) return;
@@ -467,7 +484,6 @@
       document.getElementById('editor-choice-modal').classList.add('hidden');
     }
 
-    // Keyboard shortcut
     document.addEventListener('keydown', function(e) {
       if (e.ctrlKey && e.shiftKey && e.key === 'E') {
         e.preventDefault();
@@ -475,11 +491,9 @@
       }
     });
 
-    // ========================================================
-    // 💻 1. RAW CODE EDITOR
-    // ========================================================
     let adminEditingPath = "";
     
+    // 1. RAW CODE EDITOR
     async function startRawEditor() {
       closeEditorChoice();
       isRawEditMode = true;
@@ -491,13 +505,8 @@
       editor.value = "";
       loader.style.display = "block";
       
-      if (!currentFileName) {
-        adminEditingPath = "index.html"; 
-        document.getElementById('editing-file-name').innerText = "index.html";
-      } else {
-        adminEditingPath = `website/docs/${currentFileName}.md`;
-        document.getElementById('editing-file-name').innerText = currentFileName + ".md";
-      }
+      adminEditingPath = currentFileName ? `website/docs/${currentFileName}.md` : "index.html";
+      document.getElementById('editing-file-name').innerText = currentFileName ? currentFileName + ".md" : "index.html";
 
       try {
         const response = await fetch(`https://api.github.com/repos/spike0en/awesome_nothing/contents/${adminEditingPath}?ref=main`);
@@ -516,16 +525,20 @@
     }
 
     async function saveRawToGitHub() {
-      const pwd = document.getElementById('admin-pass-raw').value;
-      const newContent = document.getElementById('admin-editor').value;
-      const saveBtn = document.getElementById('btn-save-raw');
+      // 🛑 TOKEN CHECK
+      if (API_PART_1.includes("xxxxxxxx")) {
+        alert("⚠️ SAVE FAILED!\n\nYou haven't added your GitHub Token yet. Please open the HTML code and replace 'ghp_xxxxxxxxxxxx' with your real token.");
+        return;
+      }
 
+      const pwd = document.getElementById('admin-pass-raw').value;
       if (!pwd || pwd !== ADMIN_PASSWORD) { alert("❌ Incorrect Password!"); return; }
 
+      const saveBtn = document.getElementById('btn-save-raw');
       saveBtn.innerText = "Saving..."; saveBtn.disabled = true;
 
       const combinedToken = API_PART_1 + API_PART_2;
-      const base64Content = btoa(unescape(encodeURIComponent(newContent)));
+      const base64Content = btoa(unescape(encodeURIComponent(document.getElementById('admin-editor').value)));
 
       try {
         const response = await fetch(`https://api.github.com/repos/spike0en/awesome_nothing/contents/${adminEditingPath}`, {
@@ -533,9 +546,8 @@
           headers: { 'Authorization': `Bearer ${combinedToken}`, 'Content-Type': 'application/json' },
           body: JSON.stringify({ message: `Raw code update: ${adminEditingPath}`, content: base64Content, sha: currentFileSha, branch: 'main' })
         });
-
         if (response.ok) {
-          alert("✅ Success! Raw file updated securely.");
+          alert("✅ Success! File updated.");
           closeRawEditor();
           if (!currentFileName) window.location.reload(); 
           else openPage(currentFileName); 
@@ -546,10 +558,7 @@
       saveBtn.innerText = "Save to GitHub"; saveBtn.disabled = false;
     }
 
-
-    // ========================================================
-    // 👁️ 2. LIVE VISUAL EDITOR (GOD MODE)
-    // ========================================================
+    // 2. VISUAL EDITOR
     function startVisualEditor() {
       closeEditorChoice();
       isVisualEditMode = true;
@@ -558,6 +567,11 @@
       document.getElementById('floating-save-bar').classList.remove('hidden');
       alert("✍️ VISUAL EDIT MODE ON\n\nYou can click on any text or card to edit it without opening a new page!");
     }
+
+    // SHIELD: Prevent clicking links/cards when visually editing
+    document.addEventListener('click', function(e) {
+      if (isVisualEditMode && e.target.closest('a')) e.preventDefault(); 
+    });
 
     function cancelVisualEdits() {
       isVisualEditMode = false;
@@ -568,18 +582,21 @@
     }
 
     async function saveVisualEdits() {
+      if (API_PART_1.includes("xxxxxxxx")) {
+        alert("⚠️ SAVE FAILED!\n\nYou haven't added your GitHub Token yet.");
+        return;
+      }
+
       const pwd = document.getElementById('live-pass').value;
       if (!pwd || pwd !== ADMIN_PASSWORD) { alert("❌ Incorrect Password!"); return; }
 
       const saveBtn = document.getElementById('btn-save-live');
       saveBtn.innerText = "Saving..."; saveBtn.disabled = true;
 
-      cancelVisualEdits(); // Clean up borders before saving
+      cancelVisualEdits(); 
 
       const combinedToken = API_PART_1 + API_PART_2;
-      let contentToSave = "";
-      let shaToUpdate = currentFileSha;
-      let path = "";
+      let contentToSave = "", shaToUpdate = currentFileSha, path = "";
 
       if (currentFileName) {
         path = `website/docs/${currentFileName}.md`;
@@ -592,33 +609,32 @@
         document.getElementById('content-view').classList.add('hidden');
         document.getElementById('home-view').classList.remove('hidden');
         contentToSave = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-
         try {
            const resp = await fetch(`https://api.github.com/repos/spike0en/awesome_nothing/contents/index.html?ref=main`);
-           const data = await resp.json();
-           shaToUpdate = data.sha;
+           shaToUpdate = (await resp.json()).sha;
         } catch(e) {}
       }
-
-      const base64Content = btoa(unescape(encodeURIComponent(contentToSave)));
 
       try {
         const response = await fetch(`https://api.github.com/repos/spike0en/awesome_nothing/contents/${path}`, {
           method: 'PUT',
           headers: { 'Authorization': `Bearer ${combinedToken}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: `Visual Edit update`, content: base64Content, sha: shaToUpdate, branch: 'main' })
+          body: JSON.stringify({ message: `Visual Edit update`, content: btoa(unescape(encodeURIComponent(contentToSave))), sha: shaToUpdate, branch: 'main' })
         });
-
         if (response.ok) {
           alert("✅ Success! Visual edits saved.");
           if (!currentFileName) window.location.reload(); 
           else openPage(currentFileName); 
-        } else {
-          alert(`❌ Failed to save.`);
-        }
+        } else { alert(`❌ Failed to save.`); }
       } catch (error) {}
-      
       saveBtn.innerText = "Save to GitHub"; saveBtn.disabled = false;
+    }
+
+    let clickCount = 0, clickTimer;
+    function secretClick() {
+      clickCount++; clearTimeout(clickTimer);
+      if(clickCount >= 5) { triggerEditorChoice(); clickCount = 0; }
+      clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
     }
   </script>
 </body>
